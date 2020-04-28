@@ -1,0 +1,31 @@
+# ignore files LaTeX creates during compilation
+*.tex.swp
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.glo
+*.glg
+*.gls
+*.ist
+*.lof
+*.out
+*.run.xml
+*.toc
+*.eps
+*.dvi
+*.ps
+*.fls
+*.glsdefs
+*.fdb_latexmk
+*.gz
+*.log
+
+# ignore all pdfs but these two because they contain images needed for the HsH LaTeX template
+*.pdf
+!H_WI_Pantone1665.pdf
+!Wortmarke_WI_schwarz.pdf
+!resources/coveragereport.pdf
