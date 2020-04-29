@@ -1,50 +1,48 @@
-\documentclass[12pt,DIV14,BCOR10mm,a4paper,twoside,parskip=half-,headsepline,headinclude]{scrreprt}
-% Grundgröße 12pt, zweiseitig
-\usepackage[headsepline,headinclude,automark]{scrpage2}
-% Seitenköpfe automatisch
-\usepackage[ngerman]{babel}
-% Sprachpaket für Deutsch (Umlaute, Trennung,deutsche Überschriften)
-\usepackage{blindtext}
-\usepackage{graphicx,hyperref,amssymb}
-%Graphikeinbindung, Hyperref (alles klickbar, Bookmarks),
-%Math. Symbole aus AmsTeX
-\usepackage[utf8]{inputenc}
-% Umlaute und über Tastatur einzugeben
+% arara: pdflatex: { shell: true, draft: true }
+% arara: makeglossaries
+% arara: biber
+% arara: pdflatex: { shell: true, synctex: true }
+% arara: pdflatex: { shell: true, synctex: true }
 
-% Festlegung Kopf- und Fußzeile
-\defpagestyle{meinstil}{%
+\documentclass[12pt,DIV14,BCOR10mm,a4paper,parskip=half-,headsepline,headinclude,english,ngerman,bibliography=totocnumbered]{scrreprt}
+
+\usepackage{hsh_f4_scientificreport}
+
+\newcommand{\documentTitle}{Title of document}
+\newcommand{\authorName}{Name of authors}
+\newcommand{\uniModuleName}{Name of Uni module}
+\newcommand{\semester}{insert semester here}
+
+% Definition of page header and fotter
+\defpagestyle{hshstyle}{%
 {\headmark \hfill}
 {\hfill \headmark}
 {\hfill \headmark\hfill }
 (\textwidth,.4pt)
 }{%
 (\textwidth,.4pt)
-{\pagemark\hfill Vorname Name}
-{Version 0.1 vom \today \hfill \pagemark}
-{Version 0.1 vom \today\hfill\pagemark}
+{\pagemark\hfill \authorName}
+{Version 1.0 vom \today \hfill \pagemark}
+{Version 1.0 vom \today\hfill\pagemark}
 }
-\pagestyle{meinstil}
-
-\raggedbottom
-\renewcommand{\topfraction}{1}
-\renewcommand{\bottomfraction}{1}
-
+\pagestyle{hshstyle}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{document}    % hier gehts los
-  \thispagestyle{empty} % Titelseite
+\begin{document}
+\thispagestyle{empty}
 \includegraphics[width=0.2\textwidth]{Wortmarke_WI_schwarz}
 
    {  ~ \sffamily
   \vfill
-  {\Huge\bfseries Titel der Arbeit}
+  {\Huge\bfseries \documentTitle}
   \bigskip
 
   {\Large
-  Vorname Name \\[2ex]
- Bachelor-Arbeit im Studiengang "`Angewandte Informatik"'
- \\[5ex]
-   \today }
+  \authorName \\[2ex]
+  \uniModuleName \\[0.5ex]
+  \semester
+  \\[5ex]
+  \today }
 }
  \vfill
 
@@ -53,52 +51,34 @@
 
 \vspace*{-3cm}
 
-  \newpage \thispagestyle{empty}
- \begin{tabular}{ll}
-{\bfseries\sffamily Autor} &  Vorname Name \\
-            & Matrikelnummer \\
-            & dauerhafte email-Adresse \\[5ex]
-{\bfseries\sffamily Erstprüferin:} & Prof. Dr. Vorname Name \\
-          & Abteilung Informatik, Fakultät IV \\
-         & Hochschule Hannover \\
-        & email-Adresse \\[5ex]
-{\bfseries\sffamily Zweitprüfer:} &Prof. Dr. Vorname Name \\
-          & Abteilung Informatik, Fakultät IV \\
-         & Hochschule Hannover \\
-        & email-Adresse
-\end{tabular}
+\tableofcontents
 
-\vfill
+\blindtext
+\blindtext
 
-\begin{center} \sffamily\bfseries Selbständigkeitserklärung \end{center}
-% fett und zentriert in der minipage
+\printbibliography
 
-Hiermit erkläre ich, dass ich die eingereichte Bachelor-Arbeit
-selbständig und ohne fremde Hilfe verfasst, andere als die von mir angegebenen Quellen
-und Hilfsmittel nicht benutzt und die den benutzten Werken wörtlich oder
-inhaltlich entnommenen Stellen als solche kenntlich gemacht habe.
-\vspace*{7ex}
+% Can be used to add a list of acronyms with their description
+% Use commands below to include all acronyms and literature, i.e. for testing
+%\glsaddall
+%\nocite{*}
+%\deftranslation{to=German}{Acronyms}{Abkürzungsverzeichnis}
+%\deftranslation{to=German}{Glossary}{Glossar}
+\printacronyms[title=Abkürzungsverzeichnis,toctitle=Abkürzungsverzeichnis]
+\printglossary[title=Glossar,toctitle=Glossar,type=main]
 
-Hannover, den \today \hfill Unterschrift
-  \pdfbookmark[0]{Inhalt}{contents}
-  \tableofcontents  % Inhaltsverzeichnis
+%\addcontentsline{toc}{chapter}{\listfigurename}
+% Insert list of figures, if a figure has been added to document
+\iftotalfigures
+  \listoffigures
+\fi
 
-\listoffigures      % Abbildungsverzeichnis
+% Uncomment below if you want to display a list of tables
+%s\addcontentsline{toc}{chapter}{\listtablename}
+% \listoftables
 
-\listoftables       % Tabellenverzeichnis
+\begin{appendices}
 
-\blinddocument  % Text
-
-%\input{abkuerz.tex}      % Einbinden von Tex-Files
-%\input{einfuehrung.tex}
-%
-%\include{normen}        % Einbinden von größeren Tex-Files,z.B. Kapiteln
-%\include{aufbau}
-%\include{zitieren}
-%\include{form}
-%\include{allgtips}
-%
-%\bibliographystyle{alpha}  % Schlüssel als Buchstaben
-%\bibliography{thesis}      % Literaturverzeichnis
+\end{appendices}
 
 \end{document}

@@ -1,0 +1,187 @@
+\typeout{Default LaTeX template for scientific reports at the Hochschule Hannover with few adjustments <2018-10-31> Dennis Grabowski}
+\NeedsTeXFormat{LaTeX2e}
+
+%%%%%%%%%%%%
+% PACKAGES %
+%%%%%%%%%%%%
+
+%% ~~~ font and language related packages ~~~
+
+% use unicode (utf-8) input encoding
+\RequirePackage[utf8]{inputenc}
+% in case you write German, use the following
+%\usepackage[english,main=ngerman]{babel}
+\RequirePackage[main=ngerman, english]{babel}
+% Provide text companion fonts
+\RequirePackage{textcomp}
+% Provide Dingbats,Symbol font commands
+\RequirePackage{pifont}
+
+%% ~~~ document formatting relevant packages ~~~
+
+% Define and manage page styles in the context of KOMAscript
+\RequirePackage[headsepline,automark]{scrlayer-scrpage}
+% Required for defining custom colors
+\RequirePackage[usenames,dvipsnames]{xcolor}
+% for hyperlinks between documents and within the document
+\RequirePackage{hyperref}
+
+%% ~~~ document layout / scientific paper relevant packages ~~~
+
+% add table of contents and other tables automatically
+\RequirePackage[nottoc]{tocbibind}
+\RequirePackage[toc, page]{appendix}
+% bibliography
+\RequirePackage[backend=biber,natbib=true, style=numeric, citestyle=numeric, maxnames=7, minnames=1, maxcitenames=2, url=true]{biblatex}
+
+% create glossaries
+\RequirePackage[toc,section=chapter,nopostdot,acronym,style=list]{glossaries}
+
+% count amount of tables/figures - useful for ifs
+\RequirePackage[figure,table]{totalcount}
+
+%% ~~~ source code listings related packages ~~~
+
+% Main package for inserting code
+\RequirePackage{listings}
+
+%% ~~~ figures related packages ~~~
+
+% Image insertion
+\RequirePackage{graphicx}
+
+% ~~~ tables related packages ~~~
+
+ % Required for tables and figures in the multi
+\RequirePackage{float}
+% Automatically fill width of environment for columns
+\RequirePackage{tabularx}
+% Modifies tabularx to import features from longtable package (i.e. multi-page tables)
+\RequirePackage{ltablex}
+
+%% ~~~ math related packages ~~~
+
+% Standard math packages
+\RequirePackage{amssymb}
+
+%% ~~~ latex simplification related packages ~~~
+
+% Required by csquotes package
+\RequirePackage{etoolbox}
+% Enables smart quotations
+\RequirePackage[autostyle=true,german=quotes,thresholdtype=words,threshold=20]{csquotes}
+% Improved newcommand macros
+\RequirePackage{xparse}
+% Provide commands to produce blind test for testing
+\RequirePackage{blindtext}
+% Include external pdf pages
+\RequirePackage{pdfpages}
+% Allows for URL-sensitive line breaks
+\RequirePackage{url}
+% Allows commands to be executed before \shipout
+\RequirePackage{atbegshi}
+
+%%%%%%%%%%%%%%%%
+% NEW COMMANDS %
+%%%%%%%%%%%%%%%%
+
+% style & idea copied from: https://tex.stackexchange.com/questions/8946/how-to-combine-acronym-and-glossary
+% Defining new acronyms and glossary entries in one go
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+
+  %%% The glossary entry the acronym links to
+  \newglossaryentry{g-#3}{name={#5},
+      description={#6},#1}
+
+  %%% define the acronym and use the see= option
+  \newglossaryentry{#3}{type=\acronymtype, name={#4}, description={#5}, first={#5 (#4)\glsadd{g-#3}}, see=[Glossareintrag:]{g-#3}}
+}
+
+% Checkmarks for boolean-like tables
+\newcommand{\greencheckmark}{\textcolor{green}{\ding{51}}}%
+\newcommand{\redxmark}{\textcolor{red}{\ding{55}}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SETUP FOR SPECIFIC PACKAGES %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define our university specific color
+\definecolor{hsh-f4-orange}{rgb}{0.862745098, 0.235294118, 0.019607843}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor={hsh-f4-orange},
+    citecolor={hsh-f4-orange},
+    urlcolor={blue!80!black},
+    bookmarks=true
+}
+
+\KOMAoptions{headinclude}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+% Define which bibliography file should be used
+\bibliography{literature.bib}
+% Define a path for images which could be included
+\graphicspath{{./images/}}
+
+\makeatletter
+\makeatother
+
+% Enables glossary generation
+\makeglossaries
+\loadglsentries[main]{acronyms.tex}
+
+%%% Change settings for epigraphs
+%%% Change chapter format, if needed.
+% customize chapter format:
+% \KOMAoption{headings}{twolinechapter}
+% \renewcommand*\chapterformat{\thechapter\autodot}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CUSTOMIZATIONS FOR CLEARER DOCUMENTS %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% let URLs break at every special character
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
+% customize dictum format:
+\setkomafont{dictumtext}{\itshape\small}
+\setkomafont{dictumauthor}{\normalfont}
+\renewcommand*\dictumwidth{\linewidth}
+\renewcommand*\dictumauthorformat[1]{--- #1}
+\renewcommand*\dictumrule{}
+
+% uncomment for german paper
+% \renewcommand{\lstlistingname}{Quellcode}
+
+\raggedbottom
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+% Let numbered lists use arabic numbers and let nested
+% numbered lists use their full enumeration path (1.1.1.1 instead of just .1)
+\renewcommand{\labelenumi}{\theenumi}
+\renewcommand{\theenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\theenumiii}
+\renewcommand{\theenumiii}{\theenumii\arabic{enumiii}.}
+\renewcommand{\labelenumiv}{\theenumiv}
+\renewcommand{\theenumiv}{\theenumiii\arabic{enumiv}.}
+
+% uncomment for german paper
+% \renewcommand\appendixpagename{Appendix}
+% \renewcommand\appendixtocname{Appendix}
+
+\renewcommand*{\chapterheadstartvskip}{\vspace*{-1.4cm}}
+
+\endinput
