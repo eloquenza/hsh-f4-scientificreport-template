@@ -16,6 +16,8 @@
 \RequirePackage{textcomp}
 % Provide Dingbats,Symbol font commands
 \RequirePackage{pifont}
+% Slightly tweak font spacing for aesthetics
+\RequirePackage{microtype}
 
 %% ~~~ document formatting relevant packages ~~~
 
@@ -25,6 +27,8 @@
 \RequirePackage[usenames,dvipsnames]{xcolor}
 % for hyperlinks between documents and within the document
 \RequirePackage{hyperref}
+%  Use­ful for page footer that says: Page N of M.
+\RequirePackage{lastpage}
 
 %% ~~~ document layout / scientific paper relevant packages ~~~
 
@@ -44,11 +48,19 @@
 
 % Main package for inserting code
 \RequirePackage{listings}
+\RequirePackage{algorithm} % Allows for algorithm description
+\RequirePackage[noend]{algpseudocode}
 
 %% ~~~ figures related packages ~~~
 
 % Image insertion
 \RequirePackage{graphicx}
+% Al­lows fig­ures or ta­bles to have text wrapped around them
+\RequirePackage{wrapfig}
+% Diagram and figure creation and rendering
+\RequirePackage{tikz}
+% Circuit Graphics
+\usepackage[americanvoltages, europeancurrents, americanresistors, cuteinductors]{circuitikz}
 
 % ~~~ tables related packages ~~~
 
@@ -58,11 +70,27 @@
 \RequirePackage{tabularx}
 % Modifies tabularx to import features from longtable package (i.e. multi-page tables)
 \RequirePackage{ltablex}
+% Horizontal rules in tables
+\RequirePackage{booktabs}
 
 %% ~~~ math related packages ~~~
 
 % Standard math packages
 \RequirePackage{amssymb}
+% Math Theorems
+\RequirePackage{amsthm}
+% Math Symbols
+\RequirePackage{amssymb}
+% Math Fonts
+\RequirePackage{amsfonts}
+% Extra math tools such as PairedDelimiter
+\RequirePackage{mathtools}
+% Nice sigma => \upsigma
+\RequirePackage{upgreek}
+% Enables array features
+\RequirePackage{array}
+% For SI Unit easy formatting
+\RequirePackage{siunitx}
 
 %% ~~~ latex simplification related packages ~~~
 
@@ -80,6 +108,17 @@
 \RequirePackage{url}
 % Allows commands to be executed before \shipout
 \RequirePackage{atbegshi}
+
+%% ~~~ misc. packages ~~~
+
+% Date-Time formatting
+\usepackage{datetime}
+% For strikethrough text \st{}
+\usepackage{ulem}
+% useful for leaving todonotes
+\usepackage[colorinlistoftodos]{todonotes}
+% Color boxes for comment
+\usepackage{tcolorbox}
 
 %%%%%%%%%%%%%%%%
 % NEW COMMANDS %
@@ -100,6 +139,40 @@
 % Checkmarks for boolean-like tables
 \newcommand{\greencheckmark}{\textcolor{green}{\ding{51}}}%
 \newcommand{\redxmark}{\textcolor{red}{\ding{55}}}%
+
+%%%%%%%%%%%%%%%%%
+% MATH COMMANDS %
+%%%%%%%%%%%%%%%%%
+
+\DeclarePairedDelimiter\paren{(}{)}%
+\DeclarePairedDelimiter\bra{[}{]}%
+\DeclarePairedDelimiter\curly{\{}{\}}%
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}%
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}%
+
+\newcommand{\grad}{\nabla}
+\newcommand{\deriv}[2]{\frac{d #1}{d #2}}
+\newcommand{\bigO}{\mathcal{O}}
+\DeclareMathSymbol{\umu}{\mathalpha}{operators}{0}
+
+%%%%%%%%%%%%%%%%%
+% TODO COMMANDS %
+%%%%%%%%%%%%%%%%%
+
+\newcommand{\hightodo}[1]{\todo[inline,backgroundcolor=red!90!yellow!80!white]{\textbf{\userId}: #1}}
+\newcommand{\lowtodo}[1]{\todo[inline,backgroundcolor=blue!30!white]{\textbf{\userId}: #1}}
+
+\newtcolorbox{tip}{colback=blue!5!white,colframe=blue!75!black}
+\newtcolorbox{tipt}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\bfseries,title=#1}
+
+% Thick strike out
+\newcommand{\soutthick}[1]{%
+    \renewcommand{\ULthickness}{3pt}%
+       \sout{#1}%
+    \renewcommand{\ULthickness}{.4pt}% Resetting to ulem default
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SETUP FOR SPECIFIC PACKAGES %
@@ -144,6 +217,8 @@
 % \KOMAoption{headings}{twolinechapter}
 % \renewcommand*\chapterformat{\thechapter\autodot}
 
+\usetikzlibrary{shapes,arrows,fit,calc,positioning,automata,decorations.markings}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CUSTOMIZATIONS FOR CLEARER DOCUMENTS %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,6 +241,11 @@
 \raggedbottom
 \renewcommand{\topfraction}{1}
 \renewcommand{\bottomfraction}{1}
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\AtBeginDocument{\numberwithin{lstlisting}{section}}  % Number listings within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
 
 % Let numbered lists use arabic numbers and let nested
 % numbered lists use their full enumeration path (1.1.1.1 instead of just .1)
